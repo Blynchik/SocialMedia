@@ -21,8 +21,10 @@ import org.springframework.context.annotation.Configuration;
                 title = "Social Media API documentation",
                 version = "1.0",
                 description = """
-                        <p><b>Test credentials:</b><br>
-                        - ---- / -----<br>
+                        <p><b>Test credentials:</b>
+                        <br>
+                        - ---- / -----
+                        <br>
                         """,
                 contact = @Contact(url = "https://github.com/Blynchik", name = "Vadim Sovetnikov", email = "vadimsovetnikov@mail.ru")
         ),
