@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.project.socialMedia.config.SecurityConfig.PASSWORD_ENCODER;
+
 @Service
 @Transactional(readOnly = true)
 public class AppUserService {
@@ -35,6 +37,7 @@ public class AppUserService {
 
     @Transactional
     public void create(AppUser user){
+        user.setPassword(PASSWORD_ENCODER.encode((user.getPassword())));
         user.getRoles().add(Role.USER);
         appUserRepository.save(user);
     }
@@ -44,6 +47,7 @@ public class AppUserService {
         AppUser user = appUserRepository.getReferenceById(id);
         updatedUser.setId(user.getId());
         updatedUser.setRoles(user.getRoles());
+        updatedUser.setPassword(appUserRepository.getReferenceById(id).getPassword());
         appUserRepository.save(updatedUser);
     }
 
