@@ -1,12 +1,16 @@
 package com.project.socialMedia.controller;
 
+import com.project.socialMedia.dto.CreateAppUserDTO;
+import com.project.socialMedia.dto.ResponseAppUserDTO;
 import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.util.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AbstractUserController {
 
@@ -16,31 +20,37 @@ public class AbstractUserController {
         this.appUserService = appUserService;
     }
 
-    public ResponseEntity<AppUser> getById(Long id) {
+    public ResponseEntity<ResponseAppUserDTO> getById(Long id) {
         Optional<AppUser> user = appUserService.getById(id);
 
         checkUserExistence(user, id);
 
-        return ResponseEntity.ok().body(user.get());
+        return ResponseEntity.ok().body(Converter.getAppUserDTO(user.get()));
     }
 
-    public ResponseEntity<List<AppUser>> getAll(){
-        return ResponseEntity.ok(appUserService.getAll());
+    public ResponseEntity<List<ResponseAppUserDTO>> getAll() {
+        return ResponseEntity.ok(
+                appUserService.getAll().stream()
+                .map(Converter::getAppUserDTO)
+                .collect(Collectors.toList())
+        );
     }
 
-    public ResponseEntity<?> create(AppUser appUser){
+    public ResponseEntity<?> create(CreateAppUserDTO userDTO) {
 
-        appUserService.create(appUser);
+        appUserService.create(
+                Converter.getAppUser(userDTO)
+        );
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<?> update(Long id, AppUser updatedAppUser){
-        appUserService.update(id, updatedAppUser);
+    public ResponseEntity<?> update(Long id, CreateAppUserDTO userDTO) {
+        appUserService.update(id, Converter.getAppUser(userDTO));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<AppUser> deleteById(Long id) {
+    public ResponseEntity<HttpStatus> deleteById(Long id) {
         checkUserExistence(id);
 
         appUserService.delete(id);

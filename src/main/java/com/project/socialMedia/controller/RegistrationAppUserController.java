@@ -1,5 +1,6 @@
 package com.project.socialMedia.controller;
 
+import com.project.socialMedia.dto.CreateAppUserDTO;
 import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.service.AppUserService;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ public class RegistrationAppUserController extends AbstractUserController{
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody AppUser appUser,
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAppUserDTO appUser,
                                     BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()){

@@ -35,12 +35,20 @@ public class SecurityConfig {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PASSWORD_ENCODER;
+    }
+
+    @Bean
     public UserDetailsService userDetailService() {
         return email -> {
             Optional<AppUser> optionalUser = appUserService.getByEmail(email);
 
             return new AuthUser(optionalUser.orElseThrow(
                     () -> new RuntimeException("Не существует") //TODO custom exception
+                    //TODO exception handler
+                    //TODO id hashing
+                    //TODO JWT
             ));
         };
     }

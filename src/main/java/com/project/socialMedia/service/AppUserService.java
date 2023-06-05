@@ -38,6 +38,7 @@ public class AppUserService {
     @Transactional
     public void create(AppUser user){
         user.setPassword(PASSWORD_ENCODER.encode((user.getPassword())));
+        user.setEmail(user.getEmail().toLowerCase());
         user.getRoles().add(Role.USER);
         appUserRepository.save(user);
     }
@@ -47,7 +48,8 @@ public class AppUserService {
         AppUser user = appUserRepository.getReferenceById(id);
         updatedUser.setId(user.getId());
         updatedUser.setRoles(user.getRoles());
-        updatedUser.setPassword(appUserRepository.getReferenceById(id).getPassword());
+        updatedUser.setEmail(updatedUser.getEmail().toLowerCase());
+        updatedUser.setPassword(PASSWORD_ENCODER.encode(updatedUser.getPassword()));
         appUserRepository.save(updatedUser);
     }
 

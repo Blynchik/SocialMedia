@@ -1,6 +1,7 @@
 package com.project.socialMedia.controller;
 
-import com.project.socialMedia.model.AppUser;
+import com.project.socialMedia.dto.CreateAppUserDTO;
+import com.project.socialMedia.dto.ResponseAppUserDTO;
 import com.project.socialMedia.model.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import jakarta.validation.Valid;
@@ -22,18 +23,18 @@ public class AppUserController extends AbstractUserController {
     }
 
     @GetMapping("/getOwn")
-    public ResponseEntity<AppUser> getOwn(@AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<ResponseAppUserDTO> getOwn(@AuthenticationPrincipal AuthUser authUser) {
         return super.getById(authUser.id());
     }
 
     @DeleteMapping("/deleteOwn")
-    public ResponseEntity<AppUser> deleteOwn(@AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<HttpStatus> deleteOwn(@AuthenticationPrincipal AuthUser authUser) {
         return super.deleteById(authUser.id());
     }
 
     @PutMapping("/editOwn")
     public ResponseEntity<?> updateOwn(@AuthenticationPrincipal AuthUser authUser,
-                                       @Valid @RequestBody AppUser updatedAppUser,
+                                       @Valid @RequestBody CreateAppUserDTO userDTO,
                                        BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()){
@@ -43,6 +44,6 @@ public class AppUserController extends AbstractUserController {
             );
         }
 
-        return super.update(authUser.id(), updatedAppUser);
+        return super.update(authUser.id(), userDTO);
     }
 }
