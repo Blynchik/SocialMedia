@@ -5,8 +5,11 @@ import com.project.socialMedia.dto.ResponseAppUserDTO;
 import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.util.Converter;
+import com.project.socialMedia.validator.AppUserValidator;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,10 +17,13 @@ import java.util.stream.Collectors;
 
 public class AbstractUserController {
 
-    protected AppUserService appUserService;
+    protected final AppUserService appUserService;
+    protected final AppUserValidator appUserValidator;
 
-    public AbstractUserController(AppUserService appUserService) {
+    public AbstractUserController(AppUserService appUserService,
+                                  AppUserValidator appUserValidator) {
         this.appUserService = appUserService;
+        this.appUserValidator = appUserValidator;
     }
 
     public ResponseEntity<ResponseAppUserDTO> getById(Long id) {
@@ -36,16 +42,38 @@ public class AbstractUserController {
         );
     }
 
-    public ResponseEntity<?> create(CreateAppUserDTO userDTO) {
+    public ResponseEntity<?> create(CreateAppUserDTO appUserDTO,
+                                    BindingResult bindingResult) {
+
+        appUserValidator.validate(appUserDTO, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    bindingResult.getAllErrors().stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            );
+        }
 
         appUserService.create(
-                Converter.getAppUser(userDTO)
+                Converter.getAppUser(appUserDTO)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<?> update(Long id, CreateAppUserDTO userDTO) {
+    public ResponseEntity<?> update(Long id,
+                                    CreateAppUserDTO userDTO,
+                                    BindingResult bindingResult) {
+
+        appUserValidator.validate(userDTO, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    bindingResult.getAllErrors().stream()
+                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            );
+        }
+
         appUserService.update(id, Converter.getAppUser(userDTO));
         return ResponseEntity.status(HttpStatus.OK).build();
     }

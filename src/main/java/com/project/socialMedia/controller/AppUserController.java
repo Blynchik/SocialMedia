@@ -4,9 +4,9 @@ import com.project.socialMedia.dto.CreateAppUserDTO;
 import com.project.socialMedia.dto.ResponseAppUserDTO;
 import com.project.socialMedia.model.AuthUser;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.validator.AppUserValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class AppUserController extends AbstractUserController {
 
     @Autowired
-    public AppUserController(AppUserService appUserService){
-        super(appUserService);
+    public AppUserController(AppUserService appUserService,
+                             AppUserValidator appUserValidator){
+        super(appUserService, appUserValidator);
     }
 
     @GetMapping("/getOwn")
@@ -37,13 +38,6 @@ public class AppUserController extends AbstractUserController {
                                        @Valid @RequestBody CreateAppUserDTO userDTO,
                                        BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    bindingResult.getAllErrors().stream()
-                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            );
-        }
-
-        return super.update(authUser.id(), userDTO);
+        return super.update(authUser.id(), userDTO, bindingResult);
     }
 }

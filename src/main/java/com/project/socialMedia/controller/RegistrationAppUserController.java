@@ -1,12 +1,10 @@
 package com.project.socialMedia.controller;
 
 import com.project.socialMedia.dto.CreateAppUserDTO;
-import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.validator.AppUserValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,21 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationAppUserController extends AbstractUserController{
 
     @Autowired
-    public RegistrationAppUserController(AppUserService appUserService){
-        super(appUserService);
+    public RegistrationAppUserController(AppUserService appUserService,
+                                         AppUserValidator appUserValidator){
+        super(appUserService, appUserValidator);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CreateAppUserDTO appUser,
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAppUserDTO appUserDTO,
                                     BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    bindingResult.getAllErrors().stream()
-                            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            );
-        }
-
-        return super.create(appUser);
+        return super.create(appUserDTO, bindingResult);
     }
 }
