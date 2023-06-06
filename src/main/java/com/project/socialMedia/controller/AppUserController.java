@@ -34,10 +34,10 @@ public class AppUserController extends AbstractUserController {
     }
 
     @PutMapping("/editOwn")
-    public ResponseEntity<?> updateOwn(@AuthenticationPrincipal AuthUser authUser,
+    public ResponseEntity<?> editOwn(@AuthenticationPrincipal AuthUser authUser,
                                        @Valid @RequestBody CreateAppUserDTO userDTO,
                                        BindingResult bindingResult) {
 
-        return super.update(authUser.id(), userDTO, bindingResult);
+        return super.edit(authUser.id(), userDTO, bindingResult);
     }
 }

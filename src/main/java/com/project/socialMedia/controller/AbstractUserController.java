@@ -67,7 +67,7 @@ public class AbstractUserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<?> update(Long id,
+    public ResponseEntity<?> edit(Long id,
                                     CreateAppUserDTO userDTO,
                                     BindingResult bindingResult) {
 
@@ -80,7 +80,7 @@ public class AbstractUserController {
             );
         }
 
-        appUserService.update(id, Converter.getAppUser(userDTO));
+        appUserService.edit(id, Converter.getAppUser(userDTO));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

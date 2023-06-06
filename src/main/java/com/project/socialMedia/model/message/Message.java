@@ -1,13 +1,10 @@
-package com.project.socialMedia.model;
+package com.project.socialMedia.model.message;
 
 import com.project.socialMedia.model.user.AppUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Message {
 
     @Id
@@ -28,7 +26,7 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "message")
+    @Column(name = "message", nullable = false)
     @NotBlank(message = "Message can't be empty")
     @Size(min = 1, max = 300, message = "Message length should be between 1 and 300 symbols")
     private String text;

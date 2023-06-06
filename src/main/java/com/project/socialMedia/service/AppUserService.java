@@ -44,7 +44,7 @@ public class AppUserService {
     }
 
     @Transactional
-    public void update(Long id, AppUser updatedUser){
+    public void edit(Long id, AppUser updatedUser){
         AppUser user = appUserRepository.getReferenceById(id);
         updatedUser.setId(user.getId());
         updatedUser.setRoles(user.getRoles());

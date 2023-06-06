@@ -1,12 +1,10 @@
 package com.project.socialMedia.model.user;
 
-import com.project.socialMedia.model.Message;
+import com.project.socialMedia.model.message.Message;
+import com.project.socialMedia.model.post.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,6 +18,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class AppUser {
 
     @Id
@@ -58,4 +57,7 @@ public class AppUser {
 
     @OneToMany(mappedBy = "recipient")
     private List<Message> incoming;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Post> posts;
 }

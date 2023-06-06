@@ -1,6 +1,6 @@
 package com.project.socialMedia.service;
 
-import com.project.socialMedia.model.Message;
+import com.project.socialMedia.model.message.Message;
 import com.project.socialMedia.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
