@@ -2,6 +2,7 @@ package com.project.socialMedia.controller;
 
 import com.project.socialMedia.dto.CreateAppUserDTO;
 import com.project.socialMedia.dto.ResponseAppUserDTO;
+import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.util.Converter;
@@ -88,7 +89,7 @@ public class AbstractUserController {
 
     protected void checkUserExistence(Optional<AppUser> user, Long id) {
         if (user.isEmpty()) {
-            throw new RuntimeException("User id:" + id + " not found"); //TODO Custom exception
+            throw new AppUserNotFoundException(AppUser.class, id);
         }
     }
 
@@ -96,7 +97,7 @@ public class AbstractUserController {
         Optional<AppUser> user = appUserService.getById(id);
 
         if (user.isEmpty()) {
-            throw new RuntimeException("User id:" + id + " not found"); //TODO Custom exception
+            throw new AppUserNotFoundException(AppUser.class, id);
         }
     }
 }

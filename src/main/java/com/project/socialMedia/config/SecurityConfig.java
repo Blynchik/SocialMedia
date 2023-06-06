@@ -1,5 +1,6 @@
 package com.project.socialMedia.config;
 
+import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.AppUser;
 import com.project.socialMedia.model.AuthUser;
 import com.project.socialMedia.service.AppUserService;
@@ -45,7 +46,7 @@ public class SecurityConfig {
             Optional<AppUser> optionalUser = appUserService.getByEmail(email);
 
             return new AuthUser(optionalUser.orElseThrow(
-                    () -> new RuntimeException("Не существует") //TODO custom exception
+                    () -> new AppUserNotFoundException(AppUser.class, email)
                     //TODO exception handler
                     //TODO id hashing
                     //TODO JWT
