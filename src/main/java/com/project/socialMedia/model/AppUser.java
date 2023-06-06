@@ -25,12 +25,12 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @NotBlank(message = "Name should not be empty")
     @Size(min = 2, max = 255, message = "Name length should be more then 2 and less then 255 symbols")
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotBlank(message = "Email should not be empty")
     @Size(max = 255, message = "Email length should be less then 255 symbols")
     @Email(message = "Enter your email")
@@ -38,7 +38,6 @@ public class AppUser {
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Password should not be empty")
-    @Size(min = 8, max = 255, message = "Password length should be more then 8 and less then 255 symbols")
     private String password;
 
     @Column(name = "role")

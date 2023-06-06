@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -28,7 +29,7 @@ public class SecurityConfig {
 
     private final AppUserService appUserService;
 
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Autowired
     public SecurityConfig(AppUserService userService) {
@@ -46,8 +47,7 @@ public class SecurityConfig {
             Optional<AppUser> optionalUser = appUserService.getByEmail(email);
 
             return new AuthUser(optionalUser.orElseThrow(
-                    () -> new AppUserNotFoundException(AppUser.class, email)
-                    //TODO exception handler
+                    () -> new AppUserNotFoundException(email)
                     //TODO id hashing
                     //TODO JWT
             ));
@@ -73,6 +73,7 @@ public class SecurityConfig {
                         sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
+//                .logout((logout) -> logout.logoutUrl("/logout").logoutSuccessUrl("/api/login"));
         return http.build();
     }
 }
