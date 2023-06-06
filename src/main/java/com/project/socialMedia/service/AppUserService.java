@@ -1,7 +1,7 @@
 package com.project.socialMedia.service;
 
-import com.project.socialMedia.model.AppUser;
-import com.project.socialMedia.model.Role;
+import com.project.socialMedia.model.user.AppUser;
+import com.project.socialMedia.model.user.Role;
 import com.project.socialMedia.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

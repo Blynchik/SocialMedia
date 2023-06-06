@@ -3,7 +3,7 @@ package com.project.socialMedia.controller;
 import com.project.socialMedia.dto.CreateAppUserDTO;
 import com.project.socialMedia.dto.ResponseAppUserDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
-import com.project.socialMedia.model.AppUser;
+import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.util.Converter;
 import com.project.socialMedia.validator.AppUserValidator;

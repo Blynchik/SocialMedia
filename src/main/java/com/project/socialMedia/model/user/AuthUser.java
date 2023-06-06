@@ -1,5 +1,6 @@
-package com.project.socialMedia.model;
+package com.project.socialMedia.model.user;
 
+import com.project.socialMedia.model.user.AppUser;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.User;
 

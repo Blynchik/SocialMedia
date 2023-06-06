@@ -1,4 +1,4 @@
-package com.project.socialMedia.model;
+package com.project.socialMedia.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
 

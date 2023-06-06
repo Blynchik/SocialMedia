@@ -1,6 +1,6 @@
 package com.project.socialMedia.dto;
 
-import com.project.socialMedia.model.Role;
+import com.project.socialMedia.model.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

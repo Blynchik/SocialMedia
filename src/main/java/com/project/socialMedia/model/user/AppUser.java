@@ -1,5 +1,6 @@
-package com.project.socialMedia.model;
+package com.project.socialMedia.model.user;
 
+import com.project.socialMedia.model.Message;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,4 +52,10 @@ public class AppUser {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> outgoing;
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Message> incoming;
 }

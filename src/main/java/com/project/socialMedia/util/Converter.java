@@ -2,7 +2,7 @@ package com.project.socialMedia.util;
 
 import com.project.socialMedia.dto.CreateAppUserDTO;
 import com.project.socialMedia.dto.ResponseAppUserDTO;
-import com.project.socialMedia.model.AppUser;
+import com.project.socialMedia.model.user.AppUser;
 import lombok.experimental.UtilityClass;
 import org.modelmapper.ModelMapper;
 
