@@ -101,6 +101,20 @@ public class AbstractPostController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    public ResponseEntity<HttpStatus> delete(Long postId,
+                                             Long userId) {
+        checkPostExistence(postId);
+        checkUserExistence(userId);
+        Post postToDelete = postService.getById(postId).get();
+
+        if(!postToDelete.getOwner().getId().equals(userId)){
+            throw new ForbiddenActionException();
+        }
+
+        postService.delete(postId);
+        return ResponseEntity.noContent().build();
+    }
+
     protected void checkUserExistence(Long id) {
         if (!appUserService.checkExistence(id)) {
             throw new AppUserNotFoundException(id);

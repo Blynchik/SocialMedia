@@ -52,11 +52,9 @@ public class Converter {
             postDTO.setImgAsBytes(binaryContent.getImgAsBytes());
 
             String type = binaryContent.getType();
-            switch (type) {
-                case "jpg", "jpeg" -> postDTO.setMediaType(MediaType.IMAGE_JPEG);
-                case "png" -> postDTO.setMediaType(MediaType.IMAGE_PNG);
-            }
+            postDTO.setType(type);
         }
         return postDTO;
     }
 }
+

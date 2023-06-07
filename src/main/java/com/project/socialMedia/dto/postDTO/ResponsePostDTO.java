@@ -29,7 +29,7 @@ public class ResponsePostDTO {
 
     private ResponseAppUserDTO owner;
 
-    private MediaType mediaType;
+    private String type;
 
     private byte[] imgAsBytes;
 
