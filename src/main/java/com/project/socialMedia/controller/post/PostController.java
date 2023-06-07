@@ -39,5 +39,13 @@ public class PostController extends AbstractPostController {
     public ResponseEntity<List<ResponsePostDTO>> getUserPosts(@PathVariable Long userId) throws IOException {
         return super.getUserPosts(userId);
     }
+
+    @PutMapping("/post/{id}/edit")
+    public ResponseEntity<?> edit(@PathVariable Long id,
+                                  @Valid @RequestBody CreatePostDTO createPostDTO,
+                                  BindingResult bindingResult,
+                                  @AuthenticationPrincipal AuthUser authUser){
+        return super.edit(id, authUser.id(), createPostDTO, bindingResult);
+    }
 }
 

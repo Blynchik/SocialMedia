@@ -19,7 +19,7 @@ public class AppUserController extends AbstractUserController {
 
     @Autowired
     public AppUserController(AppUserService appUserService,
-                             AppUserValidator appUserValidator){
+                             AppUserValidator appUserValidator) {
         super(appUserService, appUserValidator);
     }
 
@@ -35,8 +35,8 @@ public class AppUserController extends AbstractUserController {
 
     @PutMapping("/editOwn")
     public ResponseEntity<?> editOwn(@AuthenticationPrincipal AuthUser authUser,
-                                       @Valid @RequestBody CreateAppUserDTO userDTO,
-                                       BindingResult bindingResult) {
+                                     @Valid @RequestBody CreateAppUserDTO userDTO,
+                                     BindingResult bindingResult) {
 
         return super.edit(authUser.id(), userDTO, bindingResult);
     }

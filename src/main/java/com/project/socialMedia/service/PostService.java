@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,6 +22,10 @@ public class PostService {
                        BinaryContentService binaryContentService) {
         this.postRepository = postRepository;
         this.binaryContentService = binaryContentService;
+    }
+
+    public Optional<Post> getById(Long id){
+        return postRepository.findById(id);
     }
 
     @Transactional
@@ -47,11 +52,17 @@ public class PostService {
         Post post = postRepository.getReferenceById(id);
         updatedPost.setId(post.getId());
         updatedPost.setCreatedAt(post.getCreatedAt());
+        updatedPost.setOwner(post.getOwner());
+        postRepository.save(updatedPost);
     }
 
     @Transactional
     public void delete(Long id) {
         postRepository.deleteById(id);
+    }
+
+    public boolean checkExistence(Long id) {
+       return postRepository.existsById(id);
     }
 }
 
