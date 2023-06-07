@@ -1,17 +1,31 @@
 package com.project.socialMedia.util;
 
 import com.project.socialMedia.dto.postDTO.CreatePostDTO;
+import com.project.socialMedia.dto.postDTO.ResponsePostDTO;
 import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
 import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
 import com.project.socialMedia.model.user.AppUser;
 import lombok.experimental.UtilityClass;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 @UtilityClass
 public class Converter {
 
     private final static ModelMapper modelMapper = new ModelMapper();
+
 
     public static AppUser getAppUser(CreateAppUserDTO appUserDTO) {
         return modelMapper.map(appUserDTO, AppUser.class);
@@ -25,5 +39,24 @@ public class Converter {
         Post post = modelMapper.map(postDTO, Post.class);
         post.setOwner(owner);
         return post;
+    }
+
+    public static ResponsePostDTO getPostDTO(Post post) {
+        ResponsePostDTO postDTO = modelMapper.map(post, ResponsePostDTO.class);
+        ResponseAppUserDTO appUserDTO = Converter.getAppUserDTO(post.getOwner());
+        postDTO.setOwner(appUserDTO);
+
+        BinaryContent binaryContent = post.getBinaryContent();
+
+        if (binaryContent != null) {
+            postDTO.setImgAsBytes(binaryContent.getImgAsBytes());
+
+            String type = binaryContent.getType();
+            switch (type) {
+                case "jpg", "jpeg" -> postDTO.setMediaType(MediaType.IMAGE_JPEG);
+                case "png" -> postDTO.setMediaType(MediaType.IMAGE_PNG);
+            }
+        }
+        return postDTO;
     }
 }

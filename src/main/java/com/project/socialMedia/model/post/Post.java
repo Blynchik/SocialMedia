@@ -36,7 +36,7 @@ public class Post {
     private String text;
 
     @OneToOne
-    private BinaryContent imgAsBytes;
+    private BinaryContent binaryContent;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")

@@ -2,14 +2,9 @@ package com.project.socialMedia.service;
 
 import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
-import com.project.socialMedia.repository.BinaryContentRepository;
 import com.project.socialMedia.repository.PostRepository;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -20,27 +15,24 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final BinaryContentRepository binaryContentRepository;
-    private final ResourceLoader resourceLoader;
+    private final BinaryContentService binaryContentService;
 
     public PostService(PostRepository postRepository,
-                       BinaryContentRepository binaryContentRepository,
-                       ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+                       BinaryContentService binaryContentService) {
         this.postRepository = postRepository;
-        this.binaryContentRepository = binaryContentRepository;
+        this.binaryContentService = binaryContentService;
     }
 
     @Transactional
     public void create(Post post, String pathToImage) throws IOException {
-        BinaryContent binaryContent = getBinaryContent(pathToImage);
-        post.setImgAsBytes(binaryContent);
-        binaryContentRepository.save(binaryContent);
+        BinaryContent binaryContent = binaryContentService.getBinaryContent(pathToImage);
+        post.setBinaryContent(binaryContent);
+        binaryContentService.create(binaryContent);
         postRepository.save(post);
     }
 
     @Transactional
-    public void create(Post post){
+    public void create(Post post) {
         postRepository.save(post);
     }
 
@@ -61,22 +53,5 @@ public class PostService {
     public void delete(Long id) {
         postRepository.deleteById(id);
     }
-
-    private BinaryContent getBinaryContent(String path) throws IOException {
-
-        Resource resource;
-
-        if(path.startsWith("http")) {
-            resource = new UrlResource(path);
-        } else {
-            resource = resourceLoader.getResource("file:" + path);
-        }
-
-        byte[] fileBytes = StreamUtils.copyToByteArray(resource.getInputStream());
-        BinaryContent binaryContent = new BinaryContent();
-        binaryContent.setImgAsBytes(fileBytes);
-        binaryContent.setType(path.substring(path.lastIndexOf(".") + 1));
-
-        return binaryContent;
-    }
 }
+

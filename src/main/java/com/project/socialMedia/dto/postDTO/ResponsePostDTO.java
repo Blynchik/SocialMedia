@@ -1,10 +1,14 @@
 package com.project.socialMedia.dto.postDTO;
 
+import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.user.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
@@ -23,7 +27,11 @@ public class ResponsePostDTO {
 
     private String text;
 
-    private AppUser owner;
+    private ResponseAppUserDTO owner;
 
-    private BufferedImage img;
+    private MediaType mediaType;
+
+    private byte[] imgAsBytes;
+
+
 }
