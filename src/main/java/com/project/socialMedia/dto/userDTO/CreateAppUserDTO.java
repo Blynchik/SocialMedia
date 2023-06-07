@@ -1,4 +1,4 @@
-package com.project.socialMedia.dto;
+package com.project.socialMedia.dto.userDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

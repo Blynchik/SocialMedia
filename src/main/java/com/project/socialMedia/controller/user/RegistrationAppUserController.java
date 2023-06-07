@@ -1,6 +1,6 @@
-package com.project.socialMedia.controller;
+package com.project.socialMedia.controller.user;
 
-import com.project.socialMedia.dto.CreateAppUserDTO;
+import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.validator.AppUserValidator;
 import jakarta.validation.Valid;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/registration")
-public class RegistrationAppUserController extends AbstractUserController{
+public class RegistrationAppUserController extends AbstractUserController {
 
     @Autowired
     public RegistrationAppUserController(AppUserService appUserService,

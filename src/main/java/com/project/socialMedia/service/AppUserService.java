@@ -1,5 +1,6 @@
 package com.project.socialMedia.service;
 
+import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.model.user.Role;
 import com.project.socialMedia.repository.AppUserRepository;
@@ -56,5 +57,9 @@ public class AppUserService {
     @Transactional
     public void delete(Long id){
         appUserRepository.deleteById(id);
+    }
+
+    public Boolean checkExistence(Long id) {
+        return appUserRepository.existsById(id);
     }
 }

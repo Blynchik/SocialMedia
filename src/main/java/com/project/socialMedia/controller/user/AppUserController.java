@@ -1,7 +1,7 @@
-package com.project.socialMedia.controller;
+package com.project.socialMedia.controller.user;
 
-import com.project.socialMedia.dto.CreateAppUserDTO;
-import com.project.socialMedia.dto.ResponseAppUserDTO;
+import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
+import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
 import com.project.socialMedia.model.user.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.validator.AppUserValidator;

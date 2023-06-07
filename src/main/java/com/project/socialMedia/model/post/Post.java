@@ -35,17 +35,10 @@ public class Post {
     @Size(min = 1, max = 5000, message = "Text should be between 1 and 5000 symbols")
     private String text;
 
-    @Column(name = "image")
-    @Lob
-    private byte[] imageAsByte;
+    @OneToOne
+    private BinaryContent imgAsBytes;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private AppUser owner;
-
-    @Column(name = "type")
-    private String type;
-
-    @Column(name = "byte_size")
-    private Integer size = imageAsByte.length;
 }
