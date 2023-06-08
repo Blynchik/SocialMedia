@@ -19,7 +19,7 @@ import org.springframework.validation.BindingResult;
 import java.io.IOException;
 import java.util.List;
 
-public class AbstractPostController {
+public abstract class AbstractPostController {
 
     protected final PostService postService;
     protected final AppUserService appUserService;

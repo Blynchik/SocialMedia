@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AbstractUserController {
+public abstract class AbstractUserController {
 
     protected final AppUserService appUserService;
     protected final AppUserValidator appUserValidator;

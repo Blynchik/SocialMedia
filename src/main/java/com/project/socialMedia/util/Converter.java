@@ -1,11 +1,13 @@
 package com.project.socialMedia.util;
 
+import com.project.socialMedia.dto.RequestDTO;
 import com.project.socialMedia.dto.postDTO.CreatePostDTO;
 import com.project.socialMedia.dto.postDTO.ResponsePostDTO;
 import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
 import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
 import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
+import com.project.socialMedia.model.request.FriendRequest;
 import com.project.socialMedia.model.user.AppUser;
 import lombok.experimental.UtilityClass;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -55,6 +57,13 @@ public class Converter {
             postDTO.setType(type);
         }
         return postDTO;
+    }
+
+    public static RequestDTO getRequestDTO(FriendRequest request){
+        RequestDTO requestDTO = modelMapper.map(request, RequestDTO.class);
+        requestDTO.setInitiator(Converter.getAppUserDTO(request.getInitiator()));
+        requestDTO.setTarget(Converter.getAppUserDTO(request.getTarget()));
+        return requestDTO;
     }
 }
 

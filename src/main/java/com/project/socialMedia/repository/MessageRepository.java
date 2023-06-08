@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    @Query(value = "SELECT r FROM Message r WHERE r.recipient.id=?1")
+    @Query(value = "SELECT r FROM Message r WHERE r.recipient.id=:id")
     List<Message> findIncoming(Long id);
 
-    @Query(value = "SELECT r FROM Message r WHERE r.sender.id=?1")
+    @Query(value = "SELECT r FROM Message r WHERE r.sender.id=:id")
     List<Message> findOutgoing(Long id);
 }

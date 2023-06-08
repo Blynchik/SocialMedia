@@ -2,6 +2,7 @@ package com.project.socialMedia.model.user;
 
 import com.project.socialMedia.model.message.Message;
 import com.project.socialMedia.model.post.Post;
+import com.project.socialMedia.model.request.FriendRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -60,4 +61,10 @@ public class AppUser {
 
     @OneToMany(mappedBy = "owner")
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "initiator")
+    private List<FriendRequest> myRequests;
+
+    @OneToMany(mappedBy =  "target")
+    private List<FriendRequest> otherRequests;
 }

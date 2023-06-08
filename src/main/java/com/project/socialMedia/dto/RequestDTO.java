@@ -1,4 +1,4 @@
-package com.project.socialMedia.dto.postDTO;
+package com.project.socialMedia.dto;
 
 import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
 import lombok.AllArgsConstructor;
@@ -12,21 +12,13 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponsePostDTO {
+public class RequestDTO {
 
     private Long id;
 
+    private ResponseAppUserDTO initiator;
+
+    private ResponseAppUserDTO target;
+
     private LocalDateTime createdAt;
-
-    private String header;
-
-    private String text;
-
-    private ResponseAppUserDTO owner;
-
-    private String type;
-
-    private byte[] imgAsBytes;
-
-
 }
