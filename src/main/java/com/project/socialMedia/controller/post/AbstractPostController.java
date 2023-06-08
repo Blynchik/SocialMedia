@@ -81,7 +81,7 @@ public abstract class AbstractPostController {
         Post postToEdit = postService.getById(postId).get();
 
         if(!postToEdit.getOwner().getId().equals(userId)){
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Not your property!");
         }
 
         postValidator.validate(updatedPostDTO, bindingResult);
@@ -108,7 +108,7 @@ public abstract class AbstractPostController {
         Post postToDelete = postService.getById(postId).get();
 
         if(!postToDelete.getOwner().getId().equals(userId)){
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Not your property!");
         }
 
         postService.delete(postId);

@@ -118,4 +118,9 @@ public class FriendRequestService {
     public Boolean checkExistence(Long requestId) {
         return friendRequestRepository.existsById(requestId);
     }
+
+    public Optional<FriendRequest> getByUsers(Long firstUserId,
+                                    Long secondUserId){
+        return friendRequestRepository.findByUsers(firstUserId, secondUserId);
+    }
 }

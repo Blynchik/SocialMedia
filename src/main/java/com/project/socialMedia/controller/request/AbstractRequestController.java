@@ -31,8 +31,12 @@ public abstract class AbstractRequestController {
         checkUserExistence(targetId);
         checkUserExistence(initiatorId);
 
+        if(friendRequestService.getByUsers(initiatorId, targetId).isPresent()){
+            throw new ForbiddenActionException("Relation already exists. Check request/incoming or request/outgoing");
+        }
+
         if (targetId.equals(initiatorId)) {
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Trying send request to yourself");
         }
 
         friendRequestService.create(targetId, initiatorId);
@@ -82,12 +86,12 @@ public abstract class AbstractRequestController {
 
         FriendRequest request = friendRequestService.getById(requestId).get();
 
-        if (request.getInitiator().getId().equals(userId)) {
-            throw new ForbiddenActionException();
+        if (request.getInitiator().getId().equals(userId) && request.getInitiatorStatus().equals(Status.APPROVED)) {
+            throw new ForbiddenActionException("Already approved");
         }
 
-        if (!request.getTarget().getId().equals(userId)) {
-            throw new ForbiddenActionException();
+        if (request.getTarget().getId().equals(userId) && request.getTargetStatus().equals(Status.APPROVED)) {
+            throw new ForbiddenActionException("Already approved");
         }
 
         friendRequestService.approve(request, userId);
@@ -102,15 +106,15 @@ public abstract class AbstractRequestController {
         FriendRequest request = friendRequestService.getById(requestId).get();
 
         if (!request.getInitiator().getId().equals(userId) && !request.getTarget().getId().equals(userId)) {
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Forbidden action");
         }
 
         if (request.getInitiator().getId().equals(userId) && request.getInitiatorStatus().equals(Status.DECLINED)) {
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Already declined");
         }
 
         if (request.getTarget().getId().equals(userId) && request.getTargetStatus().equals(Status.DECLINED)) {
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("Already declined");
         }
 
         friendRequestService.decline(request, userId);
