@@ -2,12 +2,14 @@ package com.project.socialMedia.controller.post;
 
 import com.project.socialMedia.dto.post.CreatePostDTO;
 import com.project.socialMedia.dto.post.ResponsePostDTO;
+import com.project.socialMedia.model.post.Post;
 import com.project.socialMedia.model.user.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.PostService;
 import com.project.socialMedia.validator.PostValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +41,13 @@ public class PostController extends AbstractPostController {
     @GetMapping("/{userId}/post")
     public ResponseEntity<List<ResponsePostDTO>> getUserPosts(@PathVariable Long userId) throws IOException {
         return super.getUserPosts(userId);
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<Page<ResponsePostDTO>> getSubscriptionPosts(@AuthenticationPrincipal AuthUser authUser,
+                                                           @RequestParam int pageNumber,
+                                                           @RequestParam int pageSize){
+        return super.getSubscriptionPosts(authUser.id(), pageNumber, pageSize);
     }
 
     @PutMapping("/post/{id}/edit")

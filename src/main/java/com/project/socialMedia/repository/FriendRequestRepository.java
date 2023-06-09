@@ -25,6 +25,9 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
             "(r.initiator.id=:userId OR r.target.id=:userId) AND (r.targetStatus ='APPROVED' AND r.initiatorStatus = 'APPROVED'))")
     List<FriendRequest> findSubscribers(Long userId);
 
+    @Query(value = "SELECT r FROM FriendRequest r WHERE r.initiator.id=:userId")
+    List<FriendRequest> findSubscriptions(Long userId);
+
     @Query("SELECT r FROM FriendRequest r WHERE (r.initiator.id = :firstUserId OR r.target.id = :firstUserId) AND " +
             "(r.initiator.id = :secondUserId OR r.target.id = :secondUserId)")
     Optional<FriendRequest> findByUsers(Long firstUserId, Long secondUserId);

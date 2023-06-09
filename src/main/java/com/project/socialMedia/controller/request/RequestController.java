@@ -28,16 +28,6 @@ public class RequestController extends AbstractRequestController {
         return super.create(id, authUser.id());
     }
 
-    @GetMapping("/friends")
-    public ResponseEntity<List<ResponseAppUserDTO>> getFriends(@AuthenticationPrincipal AuthUser authUser) {
-        return super.getFriends(authUser.id());
-    }
-
-    @GetMapping("/subscribers")
-    public ResponseEntity<List<ResponseAppUserDTO>> getSubscribers(@AuthenticationPrincipal AuthUser authUser){
-        return super.getSubscribers(authUser.id());
-    }
-
     @GetMapping("/request/incoming")
     public ResponseEntity<List<RequestDTO>> getIncoming(@AuthenticationPrincipal AuthUser authUser){
         return super.getIncoming(authUser.id());

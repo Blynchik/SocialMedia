@@ -32,6 +32,52 @@ public class FriendRequestService {
         return friendRequestRepository.findById(requestId);
     }
 
+    public List<AppUser> getSubscribers(Long userId) {
+        List<FriendRequest> requests = friendRequestRepository.findSubscribers(userId);
+        List<AppUser> subscribers = new ArrayList<>();
+
+        for (FriendRequest r : requests) {
+            AppUser initiator = r.getInitiator();
+
+            if (!initiator.getId().equals(userId)) {
+                subscribers.add(initiator);
+            }
+        }
+        return subscribers;
+    }
+
+    public List<AppUser> getFriends(Long userId) {
+        List<FriendRequest> requests = friendRequestRepository.findFriends(userId);
+        List<AppUser> friends = new ArrayList<>();
+
+        for (FriendRequest r : requests) {
+            AppUser initiator = r.getInitiator();
+            AppUser target = r.getTarget();
+
+            if (!initiator.getId().equals(userId)) {
+                friends.add(initiator);
+            } else {
+                friends.add(target);
+            }
+        }
+        return friends;
+    }
+
+    public List<AppUser> getSubscriptions(Long userId){
+        List<FriendRequest> requests = friendRequestRepository.findSubscriptions(userId);
+        List<AppUser> subscriptions = new ArrayList<>();
+
+        for(FriendRequest r : requests){
+            AppUser target = r.getTarget();
+
+            if(!target.getId().equals(userId)){
+                subscriptions .add(target);
+            }
+        }
+        return subscriptions;
+    }
+
+
     @Transactional
     public void create(Long targetId, Long initiatorId) {
         FriendRequest friendRequest = new FriendRequest();
@@ -85,34 +131,16 @@ public class FriendRequestService {
         }
     }
 
-    public List<AppUser> getFriends(Long userId) {
-        List<FriendRequest> requests = friendRequestRepository.findFriends(userId);
-        List<AppUser> friends = new ArrayList<>();
-        for (FriendRequest r : requests) {
-            AppUser initiator = r.getInitiator();
-            AppUser target = r.getTarget();
-
-            if (!initiator.getId().equals(userId)) {
-                friends.add(initiator);
-            } else {
-                friends.add(target);
-            }
-        }
-        return friends;
+    public List<FriendRequest> getRequestFriends(Long userId) {
+        return friendRequestRepository.findFriends(userId);
     }
 
-    public List<AppUser> getSubscribers(Long userId) {
-        List<FriendRequest> requests = friendRequestRepository.findSubscribers(userId);
-        List<AppUser> subscribers = new ArrayList<>();
+    public List<FriendRequest> getRequestSubscribers(Long userId) {
+        return friendRequestRepository.findSubscribers(userId);
+    }
 
-        for (FriendRequest r : requests) {
-            AppUser initiator = r.getInitiator();
-
-            if (!initiator.getId().equals(userId)) {
-                subscribers.add(initiator);
-            }
-        }
-        return subscribers;
+    public List<FriendRequest> getRequestSubscriptions(Long userId){
+        return friendRequestRepository.findSubscriptions(userId);
     }
 
     public Boolean checkExistence(Long requestId) {

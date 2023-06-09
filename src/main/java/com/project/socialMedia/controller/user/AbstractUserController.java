@@ -5,6 +5,7 @@ import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.service.FriendRequestService;
 import com.project.socialMedia.util.Converter;
 import com.project.socialMedia.validator.AppUserValidator;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,12 +20,15 @@ import java.util.stream.Collectors;
 public abstract class AbstractUserController {
 
     protected final AppUserService appUserService;
+    protected final FriendRequestService friendRequestService;
     protected final AppUserValidator appUserValidator;
 
     public AbstractUserController(AppUserService appUserService,
+                                  FriendRequestService friendRequestService,
                                   AppUserValidator appUserValidator) {
         this.appUserService = appUserService;
         this.appUserValidator = appUserValidator;
+        this.friendRequestService = friendRequestService;
     }
 
     public ResponseEntity<ResponseAppUserDTO> getById(Long id) {
@@ -41,6 +45,24 @@ public abstract class AbstractUserController {
                 .map(Converter::getAppUserDTO)
                 .collect(Collectors.toList())
         );
+    }
+
+    public ResponseEntity<List<ResponseAppUserDTO>> getFriends(Long userId) {
+        checkUserExistence(userId);
+
+        List<ResponseAppUserDTO> friends = friendRequestService.getFriends(userId).stream()
+                .map(Converter::getAppUserDTO).toList();
+
+        return ResponseEntity.ok(friends);
+    }
+
+    public ResponseEntity<List<ResponseAppUserDTO>> getSubscribers(Long userId) {
+        checkUserExistence(userId);
+
+        List<ResponseAppUserDTO> subscribers = friendRequestService.getSubscribers(userId).stream()
+                .map(Converter::getAppUserDTO).toList();
+
+        return ResponseEntity.ok(subscribers);
     }
 
     public ResponseEntity<?> create(CreateAppUserDTO appUserDTO,

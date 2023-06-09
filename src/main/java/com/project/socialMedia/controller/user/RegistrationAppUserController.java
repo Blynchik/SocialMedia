@@ -2,6 +2,7 @@ package com.project.socialMedia.controller.user;
 
 import com.project.socialMedia.dto.user.CreateAppUserDTO;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.service.FriendRequestService;
 import com.project.socialMedia.validator.AppUserValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,9 @@ public class RegistrationAppUserController extends AbstractUserController {
 
     @Autowired
     public RegistrationAppUserController(AppUserService appUserService,
-                                         AppUserValidator appUserValidator){
-        super(appUserService, appUserValidator);
+                                         FriendRequestService friendRequestService,
+                                         AppUserValidator appUserValidator) {
+        super(appUserService, friendRequestService, appUserValidator);
     }
 
     @PostMapping

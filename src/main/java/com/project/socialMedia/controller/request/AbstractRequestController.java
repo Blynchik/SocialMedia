@@ -43,24 +43,6 @@ public abstract class AbstractRequestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<List<ResponseAppUserDTO>> getFriends(Long userId) {
-        checkUserExistence(userId);
-
-        List<ResponseAppUserDTO> friends = friendRequestService.getFriends(userId).stream()
-                .map(Converter::getAppUserDTO).toList();
-
-        return ResponseEntity.ok(friends);
-    }
-
-    public ResponseEntity<List<ResponseAppUserDTO>> getSubscribers(Long userId) {
-        checkUserExistence(userId);
-
-        List<ResponseAppUserDTO> subscribers = friendRequestService.getSubscribers(userId).stream()
-                .map(Converter::getAppUserDTO).toList();
-
-        return ResponseEntity.ok(subscribers);
-    }
-
     public ResponseEntity<List<RequestDTO>> getIncoming(Long userId) {
         checkUserExistence(userId);
 

@@ -1,6 +1,5 @@
 package com.project.socialMedia.service;
 
-import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.model.user.Role;
 import com.project.socialMedia.repository.AppUserRepository;
@@ -19,6 +18,7 @@ public class AppUserService {
 
     private final AppUserRepository appUserRepository;
 
+
     @Autowired
     public AppUserService (AppUserRepository appUserRepository){
         this.appUserRepository = appUserRepository;
@@ -35,6 +35,7 @@ public class AppUserService {
     public Optional<AppUser> getByEmail(String email){
         return appUserRepository.findByEmail(email);
     }
+
 
     @Transactional
     public void create(AppUser user){

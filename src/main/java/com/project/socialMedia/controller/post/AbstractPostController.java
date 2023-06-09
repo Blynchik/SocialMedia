@@ -12,9 +12,11 @@ import com.project.socialMedia.service.PostService;
 import com.project.socialMedia.util.Converter;
 import com.project.socialMedia.validator.PostValidator;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
@@ -113,6 +115,15 @@ public abstract class AbstractPostController {
 
         postService.delete(postId);
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<Page<ResponsePostDTO>> getSubscriptionPosts(Long userId,
+                                                           int pageNumber,
+                                                           int pageSize){
+        checkUserExistence(userId);
+        Page<Post> posts =  postService.getSubscriptionPosts(userId, pageNumber, pageSize);
+
+        return ResponseEntity.ok(posts.map(Converter::getPostDTO));
     }
 
     protected void checkUserExistence(Long id) {

@@ -2,11 +2,16 @@ package com.project.socialMedia.service;
 
 import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
+import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +21,18 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final FriendRequestService friendRequestService;
     private final BinaryContentService binaryContentService;
 
     public PostService(PostRepository postRepository,
+                       FriendRequestService friendRequestService,
                        BinaryContentService binaryContentService) {
         this.postRepository = postRepository;
         this.binaryContentService = binaryContentService;
+        this.friendRequestService = friendRequestService;
     }
 
-    public Optional<Post> getById(Long id){
+    public Optional<Post> getById(Long id) {
         return postRepository.findById(id);
     }
 
@@ -47,6 +55,21 @@ public class PostService {
         return posts;
     }
 
+    public Page<Post> getSubscriptionPosts(Long userId, int pageNumber, int pageSize) {
+        List<AppUser> subscriptions = friendRequestService.getSubscriptions(userId);
+        List<Post> subscriptionPosts = new ArrayList<>();
+        for(AppUser u : subscriptions){
+            subscriptionPosts.addAll(u.getPosts());
+        }
+        subscriptionPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+
+        int fromIndex = (pageNumber - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, subscriptionPosts.size());
+        List<Post> pagePosts = subscriptionPosts.subList(fromIndex, toIndex);
+
+        return new PageImpl<>(pagePosts, PageRequest.of(pageNumber - 1, pageSize), subscriptionPosts.size());
+    }
+
     @Transactional
     public void edit(Long id, Post updatedPost) {
         Post post = postRepository.getReferenceById(id);
@@ -62,7 +85,7 @@ public class PostService {
     }
 
     public boolean checkExistence(Long id) {
-       return postRepository.existsById(id);
+        return postRepository.existsById(id);
     }
 }
 
