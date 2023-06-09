@@ -23,7 +23,11 @@ import org.springframework.context.annotation.Configuration;
                 description = """
                         <p><b>Test credentials:</b>
                         <br>
-                        - ---- / -----
+                        email/password
+                        <br>
+                        test@mail.ru/test
+                        <br>
+                        user@mail.com/user
                         <br>
                         """,
                 contact = @Contact(url = "https://github.com/Blynchik", name = "Vadim Sovetnikov", email = "vadimsovetnikov@mail.ru")
