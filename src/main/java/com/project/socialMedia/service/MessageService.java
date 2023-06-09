@@ -25,11 +25,6 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-    @Transactional
-    public void delete(Long id) {
-        messageRepository.deleteById(id);
-    }
-
     public List<Message> getIncoming(Long id) {
         List<Message> incoming = messageRepository.findIncoming(id);
         incoming.sort(Comparator.comparing(Message::getCreatedAt).reversed());

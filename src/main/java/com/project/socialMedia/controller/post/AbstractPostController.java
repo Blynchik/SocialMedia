@@ -1,7 +1,7 @@
 package com.project.socialMedia.controller.post;
 
-import com.project.socialMedia.dto.postDTO.CreatePostDTO;
-import com.project.socialMedia.dto.postDTO.ResponsePostDTO;
+import com.project.socialMedia.dto.post.CreatePostDTO;
+import com.project.socialMedia.dto.post.ResponsePostDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.exception.ForbiddenActionException;
 import com.project.socialMedia.exception.PostNotFoundException;

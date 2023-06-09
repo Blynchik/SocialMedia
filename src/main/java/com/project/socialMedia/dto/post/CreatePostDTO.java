@@ -1,6 +1,5 @@
-package com.project.socialMedia.dto.postDTO;
+package com.project.socialMedia.dto.post;
 
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

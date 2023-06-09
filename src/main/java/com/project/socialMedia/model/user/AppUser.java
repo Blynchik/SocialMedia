@@ -1,6 +1,7 @@
 package com.project.socialMedia.model.user;
 
 import com.project.socialMedia.model.message.Message;
+import com.project.socialMedia.model.permission.ChatPermission;
 import com.project.socialMedia.model.post.Post;
 import com.project.socialMedia.model.request.FriendRequest;
 import jakarta.persistence.*;

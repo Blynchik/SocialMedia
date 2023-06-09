@@ -47,7 +47,6 @@ public class SecurityConfig {
 
             return new AuthUser(optionalUser.orElseThrow(
                     () -> new AppUserNotFoundException(email)
-                    //TODO id hashing
                     //TODO JWT
             ));
         };

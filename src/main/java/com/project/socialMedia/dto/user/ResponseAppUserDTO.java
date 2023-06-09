@@ -1,4 +1,4 @@
-package com.project.socialMedia.dto.userDTO;
+package com.project.socialMedia.dto.user;
 
 import com.project.socialMedia.model.user.Role;
 import lombok.AllArgsConstructor;

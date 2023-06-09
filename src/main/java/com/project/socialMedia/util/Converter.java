@@ -1,27 +1,19 @@
 package com.project.socialMedia.util;
 
-import com.project.socialMedia.dto.RequestDTO;
-import com.project.socialMedia.dto.postDTO.CreatePostDTO;
-import com.project.socialMedia.dto.postDTO.ResponsePostDTO;
-import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.dto.message.CreateMessageDTO;
+import com.project.socialMedia.dto.message.ResponseMessageDTO;
+import com.project.socialMedia.dto.request.RequestDTO;
+import com.project.socialMedia.dto.post.CreatePostDTO;
+import com.project.socialMedia.dto.post.ResponsePostDTO;
+import com.project.socialMedia.dto.user.CreateAppUserDTO;
+import com.project.socialMedia.dto.user.ResponseAppUserDTO;
+import com.project.socialMedia.model.message.Message;
 import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
 import com.project.socialMedia.model.request.FriendRequest;
 import com.project.socialMedia.model.user.AppUser;
 import lombok.experimental.UtilityClass;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.MediaType;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 @UtilityClass
 public class Converter {
@@ -65,5 +57,22 @@ public class Converter {
         requestDTO.setTarget(Converter.getAppUserDTO(request.getTarget()));
         return requestDTO;
     }
+
+    public static Message getMessage(CreateMessageDTO messageDTO, AppUser sender, AppUser recipient) {
+        Message message = modelMapper.map(messageDTO, Message.class);
+        message.setSender(sender);
+        message.setRecipient(recipient);
+        return message;
+    }
+
+    public static ResponseMessageDTO getMessageDTO(Message message) {
+        ResponseMessageDTO messageDTO = modelMapper.map(message, ResponseMessageDTO.class);
+        ResponseAppUserDTO sender = modelMapper.map(message.getSender(), ResponseAppUserDTO.class);
+        ResponseAppUserDTO recipient = modelMapper.map(message.getRecipient(), ResponseAppUserDTO.class);
+        messageDTO.setSender(sender);
+        messageDTO.setRecipient(recipient);
+        return messageDTO;
+    }
 }
+
 

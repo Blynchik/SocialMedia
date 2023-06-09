@@ -1,7 +1,7 @@
 package com.project.socialMedia.controller.request;
 
-import com.project.socialMedia.dto.RequestDTO;
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.dto.request.RequestDTO;
+import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import com.project.socialMedia.model.user.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.FriendRequestService;

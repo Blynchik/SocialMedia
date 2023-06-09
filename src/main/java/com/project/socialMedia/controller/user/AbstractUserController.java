@@ -1,7 +1,7 @@
 package com.project.socialMedia.controller.user;
 
-import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.dto.user.CreateAppUserDTO;
+import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.service.AppUserService;

@@ -1,7 +1,7 @@
 package com.project.socialMedia.controller.post;
 
-import com.project.socialMedia.dto.postDTO.CreatePostDTO;
-import com.project.socialMedia.dto.postDTO.ResponsePostDTO;
+import com.project.socialMedia.dto.post.CreatePostDTO;
+import com.project.socialMedia.dto.post.ResponsePostDTO;
 import com.project.socialMedia.model.user.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.PostService;

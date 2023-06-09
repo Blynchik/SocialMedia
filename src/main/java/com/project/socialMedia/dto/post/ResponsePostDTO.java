@@ -1,6 +1,6 @@
-package com.project.socialMedia.dto.postDTO;
+package com.project.socialMedia.dto.post;
 
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

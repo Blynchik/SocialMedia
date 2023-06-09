@@ -1,7 +1,7 @@
 package com.project.socialMedia.controller.request;
 
-import com.project.socialMedia.dto.RequestDTO;
-import com.project.socialMedia.dto.userDTO.ResponseAppUserDTO;
+import com.project.socialMedia.dto.request.RequestDTO;
+import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.exception.ForbiddenActionException;
 import com.project.socialMedia.exception.FriendRequestNotFoundException;
@@ -32,7 +32,7 @@ public abstract class AbstractRequestController {
         checkUserExistence(initiatorId);
 
         if(friendRequestService.getByUsers(initiatorId, targetId).isPresent()){
-            throw new ForbiddenActionException("Relation already exists. Check request/incoming or request/outgoing");
+            throw new ForbiddenActionException("Relation already exists. Check request/incoming or request/outgoing or friends");
         }
 
         if (targetId.equals(initiatorId)) {
@@ -85,6 +85,10 @@ public abstract class AbstractRequestController {
         checkUserExistence(userId);
 
         FriendRequest request = friendRequestService.getById(requestId).get();
+
+        if (!request.getInitiator().getId().equals(userId) && !request.getTarget().getId().equals(userId)) {
+            throw new ForbiddenActionException("Forbidden action");
+        }
 
         if (request.getInitiator().getId().equals(userId) && request.getInitiatorStatus().equals(Status.APPROVED)) {
             throw new ForbiddenActionException("Already approved");

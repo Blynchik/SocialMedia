@@ -1,6 +1,6 @@
 package com.project.socialMedia.controller.user;
 
-import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
+import com.project.socialMedia.dto.user.CreateAppUserDTO;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.validator.AppUserValidator;
 import jakarta.validation.Valid;

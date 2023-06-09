@@ -1,6 +1,6 @@
 package com.project.socialMedia.validator;
 
-import com.project.socialMedia.dto.userDTO.CreateAppUserDTO;
+import com.project.socialMedia.dto.user.CreateAppUserDTO;
 import com.project.socialMedia.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
