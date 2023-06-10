@@ -4,6 +4,7 @@ import com.project.socialMedia.model.post.BinaryContent;
 import com.project.socialMedia.model.post.Post;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.repository.PostRepository;
+import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -61,7 +63,7 @@ public class PostService {
         for(AppUser u : subscriptions){
             subscriptionPosts.addAll(u.getPosts());
         }
-        subscriptionPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        subscriptionPosts.sort(Comparator.comparing(Post::getCreatedAt));
 
         int fromIndex = (pageNumber - 1) * pageSize;
         int toIndex = Math.min(fromIndex + pageSize, subscriptionPosts.size());

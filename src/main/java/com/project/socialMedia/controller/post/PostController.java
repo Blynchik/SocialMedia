@@ -8,6 +8,7 @@ import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.PostService;
 import com.project.socialMedia.validator.PostValidator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -45,8 +46,12 @@ public class PostController extends AbstractPostController {
 
     @GetMapping("/news")
     public ResponseEntity<Page<ResponsePostDTO>> getSubscriptionPosts(@AuthenticationPrincipal AuthUser authUser,
-                                                           @RequestParam int pageNumber,
-                                                           @RequestParam int pageSize){
+                                                                      @RequestParam
+                                                                      @Positive(message = "Should be positive")
+                                                                      int pageNumber,
+                                                                      @RequestParam
+                                                                      @Positive(message = "Should be positive")
+                                                                      int pageSize) {
         return super.getSubscriptionPosts(authUser.id(), pageNumber, pageSize);
     }
 
@@ -54,13 +59,13 @@ public class PostController extends AbstractPostController {
     public ResponseEntity<?> edit(@PathVariable Long id,
                                   @Valid @RequestBody CreatePostDTO createPostDTO,
                                   BindingResult bindingResult,
-                                  @AuthenticationPrincipal AuthUser authUser){
+                                  @AuthenticationPrincipal AuthUser authUser) {
         return super.edit(id, authUser.id(), createPostDTO, bindingResult);
     }
 
     @DeleteMapping("/post/{id}/delete")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id,
-                                             @AuthenticationPrincipal AuthUser authUser){
+                                             @AuthenticationPrincipal AuthUser authUser) {
         return super.delete(id, authUser.id());
     }
 }

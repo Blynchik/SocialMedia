@@ -4,11 +4,12 @@ import com.project.socialMedia.controller.user.AbstractUserController;
 import com.project.socialMedia.dto.user.AuthDTO;
 import com.project.socialMedia.dto.user.CreateAppUserDTO;
 import com.project.socialMedia.exception.response.ExceptionResponse;
+import com.project.socialMedia.util.JWTUtil;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.FriendRequestService;
 import com.project.socialMedia.util.Converter;
-import com.project.socialMedia.util.JWTUtil;
 import com.project.socialMedia.validator.AppUserValidator;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -46,6 +47,7 @@ public class RegistrationAndAuthController extends AbstractUserController {
     }
 
     @PostMapping("/registration")
+    @PermitAll
     public ResponseEntity<?> create(@Valid @RequestBody CreateAppUserDTO appUserDTO,
                                     BindingResult bindingResult) {
 
@@ -68,7 +70,9 @@ public class RegistrationAndAuthController extends AbstractUserController {
     }
 
     @PostMapping("/login")
+    @PermitAll
     public ResponseEntity<?> performLogin(@RequestBody AuthDTO authDTO) {
+
         UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(authDTO.getEmail(),
                         authDTO.getPassword());
@@ -80,6 +84,15 @@ public class RegistrationAndAuthController extends AbstractUserController {
         }
 
         String token = jwtUtil.generateToken(authDTO.getEmail());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok().body(token);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> performLogout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return ResponseEntity.ok("Successfully logged out.");
     }
 }

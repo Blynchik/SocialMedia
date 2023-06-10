@@ -17,12 +17,12 @@ public class JWTUtil {
     @Value("${jwt-secret}")
     private String secret;
 
-    public String generateToken(String email) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(10).toInstant());
+    public String generateToken(String username) {
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(1).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
-                .withClaim("email", email)
+                .withClaim("username", username)
                 .withIssuedAt(new Date())
                 .withIssuer("Social Media Application")
                 .withExpiresAt(expirationDate)
@@ -36,6 +36,6 @@ public class JWTUtil {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("email").asString();
+        return jwt.getClaim("username").asString();
     }
 }

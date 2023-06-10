@@ -4,8 +4,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.model.user.AuthUser;
-import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.util.JWTUtil;
+import com.project.socialMedia.service.AppUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,36 +28,37 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Autowired
     public JWTFilter(JWTUtil jwtUtil,
-                     AppUserService appUserService){
+                     AppUserService appUserDetailsService) {
         this.jwtUtil = jwtUtil;
-        this.appUserService = appUserService;
+        this.appUserService = appUserDetailsService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
 
-            if(jwt.isBlank()){
+            if (jwt.isBlank()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
             } else {
                 try {
-                    String email = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+                    String username = jwtUtil.validateTokenAndRetrieveClaim(jwt);
+                    Optional<AppUser> optionalUser = appUserService.getByEmail(username);
 
-                    Optional<AppUser> optionalUser = appUserService.getByEmail(email);
-                    AuthUser authUser = new AuthUser(optionalUser.orElseThrow(
-                            () -> new AppUserNotFoundException(email)));
+                    UserDetails userDetail = new AuthUser(optionalUser.orElseThrow(
+                            () -> new AppUserNotFoundException(username)));
 
                     UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(authUser, authUser.getPassword(),
-                                    authUser.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(userDetail, userDetail.getPassword(),
+                                    userDetail.getAuthorities());
 
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
-                } catch (JWTVerificationException e){
+                } catch (JWTVerificationException e) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                             "Invalid JWT Token");
                 }

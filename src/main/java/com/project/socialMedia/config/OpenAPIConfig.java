@@ -1,6 +1,7 @@
 package com.project.socialMedia.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -11,6 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT",
+        in = SecuritySchemeIn.HEADER,
+        paramName = "Authorization"
+)
 @SecurityScheme(
         name = "basicAuth",
         type = SecuritySchemeType.HTTP,
@@ -32,7 +41,10 @@ import org.springframework.context.annotation.Configuration;
                         """,
                 contact = @Contact(url = "https://github.com/Blynchik", name = "Vadim Sovetnikov", email = "vadimsovetnikov@mail.ru")
         ),
-        security = @SecurityRequirement(name = "basicAuth")
+        security = {
+                @SecurityRequirement(name = "bearerAuth"),
+                @SecurityRequirement(name = "basicAuth")
+        }
 )
 public class OpenAPIConfig {
 

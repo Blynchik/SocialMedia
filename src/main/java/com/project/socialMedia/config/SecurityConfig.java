@@ -7,7 +7,6 @@ import com.project.socialMedia.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,31 +28,31 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final AppUserService appUserService;
     public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final JWTFilter jwtFilter;
+    private final AppUserService appUserService;
+
 
     @Autowired
-    public SecurityConfig(AppUserService userService,
+    public SecurityConfig(AppUserService appUserService,
                           JWTFilter jwtFilter) {
-        this.appUserService = userService;
         this.jwtFilter = jwtFilter;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PASSWORD_ENCODER;
+        this.appUserService = appUserService;
     }
 
     @Bean
     public UserDetailsService userDetailService() {
         return email -> {
             Optional<AppUser> optionalUser = appUserService.getByEmail(email);
-
             return new AuthUser(optionalUser.orElseThrow(
                     () -> new AppUserNotFoundException(email)
             ));
         };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PASSWORD_ENCODER;
     }
 
     @Bean
@@ -71,12 +70,14 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/api/registration", "/api/login").anonymous()
+                                .requestMatchers("/api/registration", "/api/login").permitAll()
                                 .requestMatchers("/api/**").authenticated())
                 .formLogin(httpSecurityFormLoginConfigurer ->
                         httpSecurityFormLoginConfigurer
                                 .loginPage("/api/login")
-                                .defaultSuccessUrl("/api/user/getOwn", true))
+                                .loginProcessingUrl("/process_login")
+                                .defaultSuccessUrl("/api/user/getOwn", true)
+                                .failureUrl("/auth/login?error"))
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer
                                 .logoutUrl("/api/logout")
