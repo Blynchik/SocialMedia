@@ -23,10 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +33,7 @@ public class RegistrationAndAuthController extends AbstractUserController {
 
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+
     @Autowired
     public RegistrationAndAuthController(AppUserService appUserService,
                                          FriendRequestService friendRequestService,
@@ -53,7 +51,7 @@ public class RegistrationAndAuthController extends AbstractUserController {
 
         appUserValidator.validate(appUserDTO, bindingResult);
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     bindingResult.getAllErrors().stream()
                             .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -69,28 +67,19 @@ public class RegistrationAndAuthController extends AbstractUserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> performLogin(@RequestBody AuthDTO authDTO){
-//        UsernamePasswordAuthenticationToken authInputToken =
-//                new UsernamePasswordAuthenticationToken(authDTO.getEmail(),
-//                        authDTO.getPassword());
-//
-//        try {
-//            authenticationManager.authenticate(authInputToken);
-//        }catch (BadCredentialsException e){
-//            return ResponseEntity.badRequest().body(new ExceptionResponse("Incorrect credentials", LocalDateTime.now()));
-//        }
-//
-//        String token = jwtUtil.generateToken(authDTO.getEmail());
-//        return ResponseEntity.ok(token);
-//    }
-//
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> performLogout(HttpServletRequest request, HttpServletResponse response) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null) {
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//        return ResponseEntity.ok("Successfully logged out.");
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> performLogin(@RequestBody AuthDTO authDTO) {
+        UsernamePasswordAuthenticationToken authInputToken =
+                new UsernamePasswordAuthenticationToken(authDTO.getEmail(),
+                        authDTO.getPassword());
+
+        try {
+            authenticationManager.authenticate(authInputToken);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.badRequest().body(new ExceptionResponse("Incorrect credentials", LocalDateTime.now()));
+        }
+
+        String token = jwtUtil.generateToken(authDTO.getEmail());
+        return ResponseEntity.ok(token);
+    }
 }

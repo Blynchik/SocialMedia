@@ -18,7 +18,7 @@ public class JWTUtil {
     private String secret;
 
     public String generateToken(String email) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(1).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(10).toInstant());
 
         return JWT.create()
                 .withSubject("User details")
@@ -36,6 +36,6 @@ public class JWTUtil {
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("username").asString();
+        return jwt.getClaim("email").asString();
     }
 }

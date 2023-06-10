@@ -71,14 +71,12 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/api/registration", "/api/login", "/error").anonymous()
+                                .requestMatchers("/api/registration", "/api/login").anonymous()
                                 .requestMatchers("/api/**").authenticated())
                 .formLogin(httpSecurityFormLoginConfigurer ->
                         httpSecurityFormLoginConfigurer
                                 .loginPage("/api/login")
-                                .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/api/user/getOwn", true)
-                                .failureUrl("/api/login?error"))
+                                .defaultSuccessUrl("/api/user/getOwn", true))
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer
                                 .logoutUrl("/api/logout")
