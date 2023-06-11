@@ -31,13 +31,16 @@ public class SecurityConfig {
     public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final JWTFilter jwtFilter;
     private final AppUserService appUserService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
 
     @Autowired
     public SecurityConfig(AppUserService appUserService,
-                          JWTFilter jwtFilter) {
+                          JWTFilter jwtFilter,
+                          CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.jwtFilter = jwtFilter;
         this.appUserService = appUserService;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Bean
@@ -85,6 +88,9 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID")
                                 .permitAll())
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
+                        httpSecurityExceptionHandlingConfigurer
+                                .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .httpBasic(withDefaults())
                 .sessionManagement((sessionManagement) ->
                         sessionManagement

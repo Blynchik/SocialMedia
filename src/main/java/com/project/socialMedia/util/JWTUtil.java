@@ -16,9 +16,11 @@ public class JWTUtil {
 
     @Value("${jwt-secret}")
     private String secret;
+    @Value("${jwt-suitability-minutes}")
+    private String suitability;
 
     public String generateToken(String username) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(1).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(Integer.parseInt(suitability)).toInstant());
 
         return JWT.create()
                 .withSubject("User details")

@@ -38,9 +38,12 @@ public class FriendRequestService {
 
         for (FriendRequest r : requests) {
             AppUser initiator = r.getInitiator();
+            AppUser target = r.getTarget();
 
             if (!initiator.getId().equals(userId)) {
                 subscribers.add(initiator);
+            } else {
+                subscribers.add(target);
             }
         }
         return subscribers;
@@ -68,10 +71,13 @@ public class FriendRequestService {
         List<AppUser> subscriptions = new ArrayList<>();
 
         for(FriendRequest r : requests){
+            AppUser initiator = r.getInitiator();
             AppUser target = r.getTarget();
 
-            if(!target.getId().equals(userId)){
-                subscriptions .add(target);
+            if (!initiator.getId().equals(userId)) {
+                subscriptions.add(initiator);
+            } else {
+                subscriptions.add(target);
             }
         }
         return subscriptions;

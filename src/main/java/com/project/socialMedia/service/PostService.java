@@ -53,7 +53,7 @@ public class PostService {
 
     public List<Post> getUserPosts(Long id) {
         List<Post> posts = postRepository.findUserPosts(id);
-        posts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        posts.sort(Comparator.comparing(Post::getCreatedAt));
         return posts;
     }
 
@@ -65,8 +65,14 @@ public class PostService {
         }
         subscriptionPosts.sort(Comparator.comparing(Post::getCreatedAt));
 
-        int fromIndex = (pageNumber - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, subscriptionPosts.size());
+        int totalPages = (int)Math.ceil((double) subscriptionPosts.size()/pageSize);
+        int maxPageNumber = totalPages == 0?1:totalPages;
+        int validPageNumber = Math.min(Math.max(pageNumber, 1), maxPageNumber);
+
+        int validPageSize = Math.max(pageSize, 1);
+
+        int fromIndex = (validPageNumber - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + validPageSize, subscriptionPosts.size());
         List<Post> pagePosts = subscriptionPosts.subList(fromIndex, toIndex);
 
         return new PageImpl<>(pagePosts, PageRequest.of(pageNumber - 1, pageSize), subscriptionPosts.size());

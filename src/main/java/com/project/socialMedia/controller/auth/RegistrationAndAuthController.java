@@ -74,7 +74,7 @@ public class RegistrationAndAuthController extends AbstractUserController {
     public ResponseEntity<?> performLogin(@RequestBody AuthDTO authDTO) {
 
         UsernamePasswordAuthenticationToken authInputToken =
-                new UsernamePasswordAuthenticationToken(authDTO.getEmail(),
+                new UsernamePasswordAuthenticationToken(authDTO.getEmail().toLowerCase(),
                         authDTO.getPassword());
 
         try {
