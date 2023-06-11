@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreatePostDTO {
 
-    @Size(max = 100, message = "Header length should be less then 101 symbol")
+    @Size(max = 100, message = "Header length should be less then 100 symbol")
     private String header;
 
     @NotBlank(message = "Text should not be empty")

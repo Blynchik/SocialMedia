@@ -27,13 +27,13 @@ public class MessageService {
 
     public List<Message> getIncoming(Long id) {
         List<Message> incoming = messageRepository.findIncoming(id);
-        incoming.sort(Comparator.comparing(Message::getCreatedAt).reversed());
+        incoming.sort(Comparator.comparing(Message::getCreatedAt));
         return incoming;
     }
 
     public List<Message> getOutgoing(Long id) {
         List<Message> outgoing = messageRepository.findOutgoing(id);
-        outgoing.sort(Comparator.comparing(Message::getCreatedAt).reversed());
+        outgoing.sort(Comparator.comparing(Message::getCreatedAt));
         return outgoing;
     }
 }

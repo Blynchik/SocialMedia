@@ -4,7 +4,6 @@ import com.project.socialMedia.dto.message.CreateMessageDTO;
 import com.project.socialMedia.dto.message.ResponseMessageDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.exception.ForbiddenActionException;
-import com.project.socialMedia.exception.FriendRequestNotFoundException;
 import com.project.socialMedia.model.permission.ChatPermission;
 import com.project.socialMedia.model.permission.PermissionStatus;
 import com.project.socialMedia.model.request.FriendRequest;

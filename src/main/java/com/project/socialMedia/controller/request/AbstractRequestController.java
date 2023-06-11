@@ -69,7 +69,7 @@ public abstract class AbstractRequestController {
         FriendRequest request = friendRequestService.getById(requestId).get();
 
         if (!request.getInitiator().getId().equals(userId) && !request.getTarget().getId().equals(userId)) {
-            throw new ForbiddenActionException("Forbidden action");
+            throw new ForbiddenActionException("Not your property!");
         }
 
         if (request.getInitiator().getId().equals(userId) && request.getInitiatorStatus().equals(Status.APPROVED)) {

@@ -69,4 +69,9 @@ public class ChatPermissionService {
     public Boolean permissionExistence(Long id){
         return chatPermissionRepository.existsById(id);
     }
+
+    @Transactional
+    public void deleteAllByUserId(Long id){
+        chatPermissionRepository.deleteByU1OrU2(id);
+    }
 }

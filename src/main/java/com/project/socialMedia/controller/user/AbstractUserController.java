@@ -5,6 +5,7 @@ import com.project.socialMedia.dto.user.ResponseAppUserDTO;
 import com.project.socialMedia.exception.AppUserNotFoundException;
 import com.project.socialMedia.model.user.AppUser;
 import com.project.socialMedia.service.AppUserService;
+import com.project.socialMedia.service.ChatPermissionService;
 import com.project.socialMedia.service.FriendRequestService;
 import com.project.socialMedia.util.Converter;
 import com.project.socialMedia.validator.AppUserValidator;
@@ -22,13 +23,16 @@ public abstract class AbstractUserController {
     protected final AppUserService appUserService;
     protected final FriendRequestService friendRequestService;
     protected final AppUserValidator appUserValidator;
+    protected final ChatPermissionService chatPermissionService;
 
     public AbstractUserController(AppUserService appUserService,
                                   FriendRequestService friendRequestService,
-                                  AppUserValidator appUserValidator) {
+                                  AppUserValidator appUserValidator,
+                                  ChatPermissionService chatPermissionService) {
         this.appUserService = appUserService;
         this.appUserValidator = appUserValidator;
         this.friendRequestService = friendRequestService;
+        this.chatPermissionService = chatPermissionService;
     }
 
     public ResponseEntity<ResponseAppUserDTO> getById(Long id) {
@@ -105,6 +109,7 @@ public abstract class AbstractUserController {
         checkUserExistence(id);
 
         appUserService.delete(id);
+        chatPermissionService.deleteAllByUserId(id);
 
         return ResponseEntity.noContent().build();
     }

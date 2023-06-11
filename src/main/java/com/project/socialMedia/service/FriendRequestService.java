@@ -98,13 +98,13 @@ public class FriendRequestService {
 
     public List<FriendRequest> getIncoming(Long userId) {
         List<FriendRequest> incoming = friendRequestRepository.findIncoming(userId);
-        incoming.sort(Comparator.comparing(FriendRequest::getCreatedAt).reversed());
+        incoming.sort(Comparator.comparing(FriendRequest::getCreatedAt));
         return incoming;
     }
 
     public List<FriendRequest> getOutgoing(Long userId) {
         List<FriendRequest> outgoing = friendRequestRepository.findOutgoing(userId);
-        outgoing.sort(Comparator.comparing(FriendRequest::getCreatedAt).reversed());
+        outgoing.sort(Comparator.comparing(FriendRequest::getCreatedAt));
         return outgoing;
     }
 

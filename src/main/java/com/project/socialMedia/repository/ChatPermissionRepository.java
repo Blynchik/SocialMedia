@@ -2,6 +2,7 @@ package com.project.socialMedia.repository;
 
 import com.project.socialMedia.model.permission.ChatPermission;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,8 @@ public interface ChatPermissionRepository extends JpaRepository<ChatPermission, 
     @Query("SELECT r FROM ChatPermission r WHERE (r.u1 = :u1 OR r.u2 = :u1) AND " +
             "(r.u1 = :u2 OR r.u2 = :u2)")
     Optional<ChatPermission> findByUsers(Long u1, Long u2);
+
+    @Modifying
+    @Query("DELETE FROM ChatPermission r WHERE r.u1 =:id OR r.u2 =:id")
+    void deleteByU1OrU2(Long id);
 }

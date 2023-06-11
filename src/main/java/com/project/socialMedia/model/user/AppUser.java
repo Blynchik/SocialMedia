@@ -55,17 +55,22 @@ public class AppUser {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "sender")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Message> outgoing;
 
     @OneToMany(mappedBy = "recipient")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Message> incoming;
 
     @OneToMany(mappedBy = "owner")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Post> posts;
 
     @OneToMany(mappedBy = "initiator")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<FriendRequest> myRequests;
 
     @OneToMany(mappedBy =  "target")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<FriendRequest> otherRequests;
 }
