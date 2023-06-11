@@ -7,6 +7,7 @@ import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.ChatPermissionService;
 import com.project.socialMedia.service.FriendRequestService;
 import com.project.socialMedia.validator.AppUserValidator;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,60 +30,45 @@ public class AppUserController extends AbstractUserController {
         super(appUserService, friendRequestService, appUserValidator, chatPermissionService);
     }
 
-    /**
-     * Метод возвращает id, имя, почту и роль пользователя.
-     * Если пользователя не существует NOT_FOUND
-     * Ответ OK.
-     * @param id - id пользователя
-     */
+    @Operation(summary = "Метод возвращает id, имя, почту и роль пользователя. " +
+            "Если пользователя не существует NOT_FOUND " +
+            "Ответ OK.")
     @GetMapping("/{id}")
     public ResponseEntity<ResponseAppUserDTO> getById(@PathVariable Long id) {
         return super.getById(id);
     }
 
-    /**
-     * Метод возвращает список друзей пользователя или пустой список.
-     * Ответ OK.
-     * @param authUser текущий аутентифицированный пользователь
-     */
+
+    @Operation(summary = "Метод возвращает список друзей пользователя или пустой список. " +
+            "Ответ OK.")
     @GetMapping("/friends")
     public ResponseEntity<List<ResponseAppUserDTO>> getFriends(@AuthenticationPrincipal AuthUser authUser) {
         return super.getFriends(authUser.id());
     }
 
-    /**
-     * Метод возвращает список подписчиков пользователя.
-     * Ответ OK.
-     * @param authUser текущий аутентифицированный пользователь
-     */
+    @Operation(summary = "Метод возвращает список подписчиков пользователя. " +
+            "Ответ OK.")
     @GetMapping("/subscribers")
     public ResponseEntity<List<ResponseAppUserDTO>> getSubscribers(@AuthenticationPrincipal AuthUser authUser){
         return super.getSubscribers(authUser.id());
     }
 
-    /**
-     * Метод позволяет удалить информацию о себе.
-     * Ответ NO_CONTENT.
-     * @param authUser текущий аутентифицированный пользователь
-     */
+    @Operation(summary = "Метод позволяет удалить информацию о себе. " +
+            "Ответ NO_CONTENT.")
     @DeleteMapping("/deleteOwn")
     public ResponseEntity<HttpStatus> deleteOwn(@AuthenticationPrincipal AuthUser authUser) {
         return super.deleteById(authUser.id());
     }
 
-    /**
-     * Метод позволяет редактировать информаию о себе
-     * @param authUser текущий аутентифицированный пользователь
-     * @param userDTO объект несущий информацию о пользователе
-     *                Поле name не может быть пустым или состоять из пустых значений.
-     *                Длина не должна быть меньше 2 и больше 255 символов.
-     *                Поле email не может быть пустым или состоять из пустых значений, должен быть уникальным.
-     *                Длина не должна быть больше 255 символов.
-     *                Должно соответствовать паттерну **@**.**
-     *                Поле password не может быть пустым или состоять из пустых значений.
-     *                Длина не должна быть меньше 8 и больше 255 символов.
-     *                Иначе вернется BAD_REQUEST.
-     */
+    @Operation(summary = "Метод позволяет редактировать информаию о себе. " +
+            "Поле name не может быть пустым или состоять из пустых значений. " +
+            "Длина не должна быть меньше 2 и больше 255 символов. " +
+            "Поле email не может быть пустым или состоять из пустых значений, должен быть уникальным. " +
+            "Длина не должна быть больше 255 символов. " +
+            "Должно соответствовать паттерну **@**.** " +
+            "Поле password не может быть пустым или состоять из пустых значений. " +
+            "Длина не должна быть меньше 8 и больше 255 символов. " +
+            "Иначе вернется BAD_REQUEST.")
     @PutMapping("/editOwn")
     public ResponseEntity<?> editOwn(@AuthenticationPrincipal AuthUser authUser,
                                      @Valid @RequestBody CreateAppUserDTO userDTO,

@@ -30,14 +30,21 @@ import org.springframework.context.annotation.Configuration;
                 title = "Social Media API documentation",
                 version = "1.0",
                 description = """
-                        <p><b>Test credentials:</b>
-                        <br>
-                        email/password
-                        <br>
-                        test@mail.ru/test
-                        <br>
-                        user@mail.com/user
-                        <br>
+                        <p><b>Test credentials:</b></p>
+                            <p>email/password:</p>
+                            <ul>
+                            <li>test@mail.ru/test</li>
+                            <li>user@mail.com/user</li>
+                            </ul>
+                            <p>Приложение поддерживает авторизацию через стандартный ввод логина и пароля, а также через JWT.</p>
+                            <p>Для авторизации можно использовать кнопку "Authorize" справа.</p>
+                            <p>Меню предоставляет возможность воспользоваться более удобным для вас способом авторизации.</p>
+                            <p>Чтобы получить JWT, можно создать нового пользователя с помощью:</p>
+                            <p><b>/api/registration</b></p>
+                            <p>или использовать пароль и электронную почту, указанные выше, с помощью:</p>
+                            <p><b>/api/login</b></p>
+                            <p>Полученный токен нужно использовать в меню "Authorize".</p>
+                            <p>Токен будет действительным в течение 10 минут. Время действительности токена можно изменить в файле application.properties.</p>
                         """,
                 contact = @Contact(url = "https://github.com/Blynchik", name = "Vadim Sovetnikov", email = "vadimsovetnikov@mail.ru")
         ),

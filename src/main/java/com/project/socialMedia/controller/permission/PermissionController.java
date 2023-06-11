@@ -8,6 +8,7 @@ import com.project.socialMedia.model.permission.PermissionStatus;
 import com.project.socialMedia.model.user.AuthUser;
 import com.project.socialMedia.service.AppUserService;
 import com.project.socialMedia.service.ChatPermissionService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,37 +31,27 @@ public class PermissionController {
         this.appUserService = appUserService;
     }
 
-    /**
-     * Метод возвращает запрошенные или подтвержденные
-     * запросы на переписку данного пользователя
-     * или пустой список.
-     * @param authUser текущий аутентифицированный пользователь
-     */
+
+    @Operation(summary = "Метод возвращает запрошенные или подтвержденные" +
+            "запросы на переписку данного пользователя " +
+            "или пустой список.")
     @GetMapping("/all")
     public ResponseEntity<List<ChatPermission>> getUserPermissions(@AuthenticationPrincipal AuthUser authUser) {
         List<ChatPermission> permissions = chatPermissionService.getUserPermissions(authUser.id());
         return ResponseEntity.ok(permissions);
     }
 
-    /**
-     * Метод возвращает запрошенные
-     * запросы на переписку данного пользователя или пустой список.
-     * @param authUser текущий аутентифицированный пользователь
-     */
+    @Operation(summary = "Метод возвращает запрошенные " +
+            "запросы на переписку данного пользователя или пустой список.")
     @GetMapping("/requests")
-    public ResponseEntity<List<ChatPermission>> getRequests(@AuthenticationPrincipal AuthUser authUser){
+    public ResponseEntity<List<ChatPermission>> getRequests(@AuthenticationPrincipal AuthUser authUser) {
         List<ChatPermission> requests = chatPermissionService.getRequests(authUser.id());
         return ResponseEntity.ok(requests);
     }
 
-    /**
-     * Метод создает запрос на переписку с другим пользователем.
-     * Если пользователя не существует возвращает NOT_FOUND,
-     * если запрос уже создан/подтвержден/такой же запрос отправлен адресатом, то
-     * FORBIDDEN
-     * @param authUser текущий аутентифицированный пользователь
-     * @param userId id пользваотеля, с кем запрашивается переписка
-     */
+    @Operation(summary = "Метод создает запрос на переписку с другим пользователем. " +
+            "Если пользователя не существует возвращает NOT_FOUND, " +
+            "если запрос уже создан/подтвержден/такой же запрос отправлен адресатом, то FORBIDDEN")
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> create(@AuthenticationPrincipal AuthUser authUser,
                                              @RequestParam Long userId) {
@@ -68,7 +59,7 @@ public class PermissionController {
 
         Boolean permissionExists = chatPermissionService.permissionExistenceByUsers(authUser.id(), userId);
 
-        if(permissionExists){
+        if (permissionExists) {
             throw new ForbiddenActionException("Permission already exists. Check permissions or requests");
         }
 
@@ -76,29 +67,26 @@ public class PermissionController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    /**
-     * Метод позволяет ответить на пришедший запрос не переписку. В последнем случае запрос на переписку полностью удаляется
-     * и его можно создать заново. Попытка подтвердить/отклонить запросы, не отоносящиеся к данному пользователю и
-     * отправленный этим же пользователем запрос, вернет FORBIDDEN.
-     * При успехе OK.
-     * @param id id запроса на переписку
-     * @param permission подтверждение или отказ на запрос
-     * @param authUser текущий аутентифицированный пользователь
-     */
+    @Operation(summary = "Метод позволяет ответить на пришедший запрос не переписку. " +
+            "В последнем случае запрос на переписку полностью удаляется " +
+            "и его можно создать заново. Попытка подтвердить/отклонить запросы, " +
+            "не отоносящиеся к данному пользователю и " +
+            "отправленный этим же пользователем запрос, вернет FORBIDDEN. " +
+            "При успехе OK.")
     @PatchMapping("/{id}/permit")
     public ResponseEntity<HttpStatus> permit(@PathVariable Long id,
                                              @RequestParam Boolean permission,
-                                             @AuthenticationPrincipal AuthUser authUser){
+                                             @AuthenticationPrincipal AuthUser authUser) {
 
         checkPermissionExistence(id);
         ChatPermission chatPermission = chatPermissionService.getById(id).get();
 
-        if(!(chatPermission.getU1().equals(authUser.id()) ||
-                chatPermission.getU2().equals(authUser.id()))){
+        if (!(chatPermission.getU1().equals(authUser.id()) ||
+                chatPermission.getU2().equals(authUser.id()))) {
             throw new ForbiddenActionException("Not your property");
         }
 
-        if(chatPermission.getU1().equals(authUser.id()) && chatPermission.getStatus().equals(PermissionStatus.REQUESTED)){
+        if (chatPermission.getU1().equals(authUser.id()) && chatPermission.getStatus().equals(PermissionStatus.REQUESTED)) {
             throw new ForbiddenActionException("Wait permission from second user");
         }
 
@@ -106,24 +94,20 @@ public class PermissionController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * Метод позволяет отменить уже существующее разрешение на переписку.
-     * Если один из пользователей отменяет разрешение,
-     * возможности вести переписку друг с другом теряют оба пользователя.
-     * Попытки отменить не сществующую или переписку, не связанную с данным пользователем
-     * вернут FORBIDDEN. Потом можно запросить повтороное разрешение.
-     * При успехе NO_CONTENT.
-     * @param id id запроса на переписку
-     * @param authUser текущий аутентифицированный пользователь
-     */
+    @Operation(summary = "Метод позволяет отменить уже существующее разрешение на переписку. " +
+            "Если один из пользователей отменяет разрешение, " +
+            "возможности вести переписку друг с другом теряют оба пользователя. " +
+            "Попытки отменить не сществующую или переписку, не связанную с данным пользователем " +
+            "вернут FORBIDDEN. Потом можно запросить повтороное разрешение. " +
+            "При успехе NO_CONTENT.")
     @DeleteMapping("/{id}/deny")
     public ResponseEntity<HttpStatus> deny(@PathVariable Long id,
-                                           @AuthenticationPrincipal AuthUser authUser){
+                                           @AuthenticationPrincipal AuthUser authUser) {
         checkPermissionExistence(id);
         ChatPermission chatPermission = chatPermissionService.getById(id).get();
 
-        if(!(chatPermission.getU1().equals(authUser.id()) ||
-                chatPermission.getU2().equals(authUser.id()))){
+        if (!(chatPermission.getU1().equals(authUser.id()) ||
+                chatPermission.getU2().equals(authUser.id()))) {
             throw new ForbiddenActionException("Not your property");
         }
 
@@ -137,8 +121,8 @@ public class PermissionController {
         }
     }
 
-    private void checkPermissionExistence(Long id){
-        if(!chatPermissionService.permissionExistence(id)){
+    private void checkPermissionExistence(Long id) {
+        if (!chatPermissionService.permissionExistence(id)) {
             throw new ChatPermissionNotFoundException(id);
         }
     }
