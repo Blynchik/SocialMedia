@@ -41,7 +41,7 @@ public class PostController extends AbstractPostController {
             "Поле pathToImage принимает полное имя файла. " +
             "Файл должен быть в формате png, jpeg, jpg. " +
             "Принимаются ссылки из интернета и из файловой системы, " +
-            "например, C:/Desktop/image.jpg или https://images.ru/image.png. " +
+            "например, C:\\\\Desktop\\\\image.jpg или https://images.ru/image.png. " +
             "Иначе BAD_REQUEST.")
     @PostMapping("/post/create")
     public ResponseEntity<?> create(@AuthenticationPrincipal AuthUser authUser,
